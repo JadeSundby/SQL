@@ -1,0 +1,38 @@
+/* Create table about people and what they do */
+
+CREATE TABLE Celebrities 
+(id INTEGER PRIMARY KEY, name TEXT, age INTEGER, occupation TEXT, nationality TEXT);
+
+CREATE TABLE CelebrityMovies (id INTEGER PRIMARY KEY, celebrity_id INTEGER, movie_title TEXT, year_released INTEGER, director TEXT, genre TEXT, FOREIGN KEY (celebrity_id) REFERENCES Celebrities(id));
+
+INSERT INTO Celebrities (id, name, age, occupation, nationality)
+VALUES 
+(1, 'Beyonce', 40, 'Singer', 'American'),
+(2, 'Tom Hanks', 65, 'Actor', 'American'),
+(3, 'Angelina Jolie', 46, 'Actress', 'American'),
+(4, 'Rihanna', 34, 'Singer', 'Barbadian'),
+(5, 'Idris Elba', 49, 'Actor', 'British'),
+(6, 'Scarlett Johansson', 37, 'Actress', 'American');
+
+
+INSERT INTO CelebrityMovies (id, celebrity_id, movie_title, year_released, director, genre)
+VALUES
+(1, 1, 'Dreamgirls', 2006, 'Bill Condon', 'Drama'),
+(2, 2, 'Forrest Gump', 1994, 'Robert Zemeckis', 'Drama'),
+(3, 3, 'Mr. & Mrs. Smith', 2005, 'Doug Liman', 'Action'),
+(4, 4, 'Oceans 8', 2018, 'Gary Ross', 'Crime'),
+(5, 5, 'The Wire', 2002, 'David Simon', 'Drama'),
+(6, 6, 'Lost in Translation', 2003, 'Sofia Coppola', 'Drama');
+
+Query showing what movie they were in and when it was released, as well as genre--
+SELECT c.name, cm.movie_title, cm.year_released, cm.genre
+FROM Celebrities c
+JOIN CelebrityMovies cm
+ON c.id = cm.celebrity_id;
+
+Query showing the celebrity name and occupation and how many movies they were apart of--
+SELECT c.name, c.occupation, COUNT(cm.id) AS num_movies
+FROM Celebrities c
+LEFT JOIN CelebrityMovies cm
+ON c.id = cm.celebrity_id
+GROUP BY c.id;
